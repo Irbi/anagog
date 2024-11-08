@@ -1,0 +1,65 @@
+version: '3'
+
+networks:
+  anagog:
+    driver: bridge
+services:
+  nats:
+    image: 'nats:0.8.0'
+    entrypoint: "/gnatsd -DV"
+    expose:
+      - "4222"
+    ports:
+      - "8222:8222"
+    hostname: nats-server
+    restart: "on-failure"
+    networks:
+      - anagog
+  api:
+    networks:
+      - anagog
+    container_name: "api-server"
+    build:
+      context: "./api"
+    entrypoint: "/go/api"
+    environment:
+      - "NATS_URI=nats://nats:4222"
+      - "API_PORT=8080"
+    depends_on:
+      - nats
+    ports:
+      - "50100:8080"
+    restart: "on-failure"
+  client:
+    networks:
+      - anagog
+    container_name: "test-client"
+    build:
+      context: "./client"
+    entrypoint: /go/client
+    environment:
+      - "API_URL=http://api-server:8080/api/"
+      - "API_VERSION=/v1/"
+      - "CLIENTS=10"
+    depends_on:
+          - api
+    ports:
+      - "50101:8081"
+    restart: "on-failure"
+  worker:
+    networks:
+      - anagog
+    container_name: "worker"
+    build:
+      context: "./worker"
+    entrypoint: /go/worker
+    environment:
+      - "NATS_URI=nats://nats:4222"
+      - "FILESTORAGE_PATH=/go/assets/files"
+    depends_on:
+      - nats
+    ports:
+      - "50102:8082"
+    restart: on-failure
+    volumes:
+      - "/var/www/golang/tmp:/go/assets/files"

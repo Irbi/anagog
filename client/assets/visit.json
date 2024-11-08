@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "DataVer": {
+      "type": "integer"
+    },
+    "UserId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "EnterTime": {
+      "type": "integer",
+      "description": "Unix Timestamp in milliseconds"
+    },
+    "ExitTime": {
+      "type": "integer",
+      "description": "Unix Timestamp in milliseconds"
+    },
+    "AlgorithmType": {
+      "type": "integer"
+    },
+    "PoiId": {
+      "type": "integer"
+    },
+    "Latitude": {
+      "type": "number"
+    },
+    "Longitude": {
+      "type": "number"
+    }
+  },
+  "minProperties": 7
+}
