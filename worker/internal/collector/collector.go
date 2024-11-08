@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-const DefaultLength = 10
-const MaxIdle = time.Second * 10
+const DefaultLength = 100
+const MaxIdle = time.Second * 2
 
 type Collector struct {
 	chVis       chan *nats.Msg

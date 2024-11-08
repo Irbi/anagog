@@ -6,7 +6,7 @@ import (
 )
 
 func CreateFile(fname string) (string, error) {
-	fmt.Println("File path " + fname)
+	fmt.Printf("Create %s\n", fname)
 	newFile, newFileErr := os.Create(fname)
 	if newFileErr != nil {
 		fmt.Println("Error creating file")
@@ -38,5 +38,4 @@ func AppendLines(fPath, data string) {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(fPath + "file appended successfully")
 }
